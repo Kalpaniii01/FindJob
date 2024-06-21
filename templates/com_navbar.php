@@ -3,20 +3,23 @@
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Company Dashboard</a>
+    <a class="navbar-brand" href="../company/index.php">Company Dashboard</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
+                <a class="nav-link" href="../company/profile.php">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Jobs</a>
+                <a class="nav-link" href="../company/add_jobs.php">Add Jobs</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">View Applicants</a>
+                <a class="nav-link" href="../company/jobs.php">Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../company/applicants.php">View Applicants</a>
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">

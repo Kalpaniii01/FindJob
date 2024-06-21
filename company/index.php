@@ -67,6 +67,25 @@ $jobCount = getCount('jobs');
         .navbar-dark .navbar-nav .nav-link:hover {
             color: #ffa500; /* Set navbar link hover color to orange */
         }
+        
+        /* Increase card size and apply hover effect */
+        .card {
+            height: 250px; /* Set height of card */
+            transition: all 0.3s ease; /* Smooth transition for hover effect */
+        }
+        
+        .card:hover {
+            background-color: #f4623a; /* Change background color on hover */
+            color: #fff; /* Change text color to white on hover */
+            transform: translateY(-10px); /* Move card up on hover */
+        }
+        
+        /* Center card title vertically */
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
     </style>
     
     <title>Company Dashboard</title>
@@ -78,13 +97,14 @@ $jobCount = getCount('jobs');
     <main class="flex-shrink-0">
         <div class="container mt-5">
             <h1>Welcome, <?php echo getCompanyName(); ?></h1>
-            <p>Welcome to the company dashboard. Here you can see an overview of your company's statistics.</p>
+            <p>Welcome to the <?php echo getCompanyName(); ?> dashboard. Here you can see an overview of our website statistics.</p>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Number of Companies</h5>
                             <p class="card-text"><?php echo $companyCount; ?></p>
+                            <i class="bi bi-building fs-2"></i> <!-- Bootstrap icon for companies -->
                         </div>
                     </div>
                 </div>
@@ -93,6 +113,7 @@ $jobCount = getCount('jobs');
                         <div class="card-body">
                             <h5 class="card-title">Number of Candidates</h5>
                             <p class="card-text"><?php echo $candidateCount; ?></p>
+                            <i class="bi bi-person fs-2"></i> <!-- Bootstrap icon for candidates -->
                         </div>
                     </div>
                 </div>
@@ -101,6 +122,7 @@ $jobCount = getCount('jobs');
                         <div class="card-body">
                             <h5 class="card-title">Number of Jobs</h5>
                             <p class="card-text"><?php echo $jobCount; ?></p>
+                            <i class="bi bi-briefcase fs-2"></i> <!-- Bootstrap icon for jobs -->
                         </div>
                     </div>
                 </div>

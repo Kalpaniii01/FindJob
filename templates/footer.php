@@ -6,25 +6,25 @@
     <div class="container p-4">
         <div class="row">
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">About Us</h5>
+                <h5 class="text-uppercase">Our Mission</h5>
                 <p>
-                    We are committed to helping companies find the best candidates and helping candidates find the best jobs.
+                At FindJob, our mission is to simplify the job search process and empower individuals to achieve their career goals. We strive to provide a platform that offers diverse opportunities, helping job seekers find roles that match their skills, passions, and ambitions.
                 </p>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Developers</h5>
                 <ul class="list-unstyled mb-0">
                     <li>
-                        <a href="#!" class="text-dark">Developer 1</a>
+                        <span>Kalpani</span>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark">Developer 2</a>
+                        <span>Hiranya Munasinghe</span>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark">Developer 3</a>
+                        <span>Kawya perera</span>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark">Developer 4</a>
+                        <span>Warren</span>
                     </li>
                 </ul>
             </div>
@@ -32,22 +32,51 @@
                 <h5 class="text-uppercase">Follow Us</h5>
                 <ul class="list-unstyled mb-0">
                     <li>
-                        <a href="#!" class="text-dark">Facebook</a>
+                        <a href="#!" class="text-dark social-link" target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-facebook"></i> Facebook
+                        </a>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark">Twitter</a>
+                        <a href="#!" class="text-dark social-link" target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-twitter"></i> Twitter
+                        </a>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark">LinkedIn</a>
+                        <a href="#!" class="text-dark social-link" target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-linkedin"></i> LinkedIn
+                        </a>
                     </li>
                     <li>
-                        <a href="#!" class="text-dark">Instagram</a>
+                        <a href="#!" class="text-dark social-link" target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-instagram"></i> Instagram
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2024 Job Portal
+    <div class="text-center p-3" style="background-color: #f4623a;">
+        © 2024 FindJob Pvt (Ltd). All rights reserved
     </div>
 </footer>
+
+<!-- Bootstrap icons CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Custom CSS for footer -->
+<style>
+    .social-link {
+        display: inline-block;
+        color: #000; /* Set initial text color */
+        transition: all 0.3s; /* Smooth transition for hover effect */
+    }
+
+    .social-link:hover {
+        color: #ffa500; /* Change text color to orange on hover */
+        text-decoration: none; /* Remove underline on hover */
+    }
+
+    .social-link i {
+        margin-right: 5px; /* Space between icon and text */
+    }
+</style>
