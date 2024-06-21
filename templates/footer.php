@@ -6,9 +6,9 @@
     <div class="container p-4">
         <div class="row">
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Our Mission</h5>
+                <h5 class="text-uppercase">About us:</h5>
                 <p>
-                At FindJob, our mission is to simplify the job search process and empower individuals to achieve their career goals. We strive to provide a platform that offers diverse opportunities, helping job seekers find roles that match their skills, passions, and ambitions.
+                <i>"I am not a product of my circumstances. I am a product of my decisions."</i> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Stephen Covey
                 </p>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
