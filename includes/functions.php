@@ -246,4 +246,43 @@ function addJob($company_id, $title, $description, $requirements, $location, $sa
     }
 }
 
+
+function getCompanyDetails($company_id) {
+    global $db;
+
+    $sql = "SELECT * FROM companies WHERE company_id = ?";
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die('prepare() failed: ' . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("i", $company_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        return $result->fetch_assoc();
+    } else {
+        return null;
+    }
+}
+
+function updateCompanyProfile($company_id, $company_name, $location, $industry, $description) {
+    global $db;
+
+    $sql = "UPDATE companies SET company_name = ?, location = ?, industry = ?, description = ? WHERE company_id = ?";
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die('prepare() failed: ' . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("ssssi", $company_name, $location, $industry, $description, $company_id);
+
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return $stmt->error;
+    }
+}
+
 ?>
