@@ -175,4 +175,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-This README provides a comprehensive overview of the FindJob project, including its structure, database design, functionalities, installation instructions, and contribution guidelines. Adjust the details as needed to fit the specific nuances of your project.
