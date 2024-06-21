@@ -2,6 +2,8 @@
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
+$error_message = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -28,29 +30,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="../assets/index/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Login</h2>
-        <?php
-        if (isset($error_message)) {
-            echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
-        }
-        ?>
-        <form action="login.php" method="post">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+    <section class="page-section" id="login">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h2>Login to FindJob</h2>
+                        <?php
+                        if (isset($error_message)) {
+                            echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+                        }
+                        ?>
+                    </div>
+                    <form action="login.php" method="post">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                            <label for="username">Username</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-xl">Login</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-    </div>
+        </div>
+    </section>
 
     <!-- Bootstrap JS and dependencies (Optional, if needed for specific components) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
