@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         exit();
     } else {
-        echo "Invalid username or password.";
+        $error_message = "Invalid username or password.";
     }
 }
 ?>
@@ -26,16 +26,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <form action="login.php" method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br>
-        
-        <input type="submit" value="Login">
-    </form>
+    <div class="container mt-5">
+        <h2>Login</h2>
+        <?php
+        if (isset($error_message)) {
+            echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
+        }
+        ?>
+        <form action="login.php" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (Optional, if needed for specific components) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
