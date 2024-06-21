@@ -1,32 +1,53 @@
+<?php
+// footer.php
+?>
+
 <footer class="bg-light text-center text-lg-start">
     <div class="container p-4">
         <div class="row">
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Contact Us</h5>
+                <h5 class="text-uppercase">About Us</h5>
                 <p>
-                    You can reach us at: <br>
-                    Email: contact@yoursite.com <br>
-                    Phone: +94 11 234 5678
+                    We are committed to helping companies find the best candidates and helping candidates find the best jobs.
                 </p>
             </div>
-            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Developers</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="#!" class="text-dark">Developer 1</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">Developer 2</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">Developer 3</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">Developer 4</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Follow Us</h5>
-                <a href="#" class="me-4 text-reset">
-                    <i class="bi bi-facebook"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="bi bi-twitter"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="bi bi-instagram"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="bi bi-linkedin"></i>
-                </a>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="#!" class="text-dark">Facebook</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">Twitter</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">LinkedIn</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">Instagram</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2023 YourSite. Developed by [Your Name].
+        © 2024 Job Portal
     </div>
 </footer>

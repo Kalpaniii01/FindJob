@@ -1,26 +1,34 @@
 <?php
+require_once 'db.php';
+
 session_start();
 
+// Check if user is logged in
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
+// Get user role
 function getRole() {
     return isset($_SESSION['user_role']) ? $_SESSION['user_role'] : null;
 }
 
+// Check if user is admin
 function isAdmin() {
     return getRole() === 'admin';
 }
 
+// Check if user is company
 function isCompany() {
     return getRole() === 'company';
 }
 
+// Check if user is candidate
 function isCandidate() {
     return getRole() === 'candidate';
 }
 
+// Check if username or email already exists in database
 function userExists($username, $email) {
     $link = dbConnect();
     $query = "SELECT user_id FROM Users WHERE username = ? OR email = ?";
@@ -33,6 +41,7 @@ function userExists($username, $email) {
     return $num_rows > 0;
 }
 
+// Register user with username, password, email, role, and additional details based on role
 function registerUser($username, $password, $email, $role, $additional_details) {
     if (userExists($username, $email)) {
         return 'Username or email already exists';
@@ -111,6 +120,7 @@ function registerUser($username, $password, $email, $role, $additional_details) 
     }
 }
 
+// Log in user with username and password
 function loginUser($username, $password) {
     $link = dbConnect();
     $query = "SELECT user_id, password, role FROM Users WHERE username = ?";
@@ -128,8 +138,58 @@ function loginUser($username, $password) {
     return false;
 }
 
+// Log out user by destroying session
 function logoutUser() {
     session_unset();
     session_destroy();
+}
+
+// Get count of records in a table
+function getCount($table) {
+    $conn = dbConnect(); // Get the database connection
+    $sql = "SELECT COUNT(*) as count FROM $table";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    } else {
+        return 0;
+    }
+}
+
+// Get company name based on company ID stored in session
+function getCompanyName() {
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+        $link = dbConnect();
+
+        // Determine table and column based on user role
+        switch ($_SESSION['user_role']) {
+            case 'company':
+                $query = "SELECT company_name FROM Companies WHERE user_id = ?";
+                break;
+            // Add cases for other roles as needed
+            default:
+                return "Guest Company"; // Default if role is not recognized
+        }
+
+        $stmt = mysqli_prepare($link, $query);
+
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $companyName);
+            mysqli_stmt_fetch($stmt);
+            mysqli_stmt_close($stmt);
+
+            return $companyName;
+        } else {
+            // Handle query preparation error
+            return "Company Name Not Found";
+        }
+    } else {
+        return "Guest Company"; // Default if user is not logged in
+    }
 }
 ?>
