@@ -192,4 +192,58 @@ function getCompanyName() {
         return "Guest Company"; // Default if user is not logged in
     }
 }
+
+function getCompanyIdByUserId($user_id) {
+    global $db;
+    $db = dbConnect(); // Get the database connection
+
+    // Check if the connection is still active
+    if (!mysqli_ping($db)) {
+        die("Connection lost. Reconnecting...");
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!$db) {
+            die("ERROR: Could not reconnect. ". mysqli_connect_error());
+        }
+    }
+
+    // Example SQL query
+    $sql = "SELECT company_id FROM companies WHERE user_id =?";
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die("prepare() failed: ". htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        return $row['company_id'];
+    } else {
+        return null; // Company not found
+    }
+}
+
+function addJob($company_id, $title, $description, $requirements, $location, $salary, $category) {
+    global $db; // Ensure $db is available in the function
+
+    $sql = "INSERT INTO jobs (company_id, title, description, requirements, location, salary, category, date_posted)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die('prepare() failed: ' . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("isssdss", $company_id, $title, $description, $requirements, $location, $salary, $category);
+
+    if ($stmt->execute()) {
+        return true; // Insert successful
+    } else {
+        return $stmt->error; // Return error message on failure
+    }
+}
+
 ?>
