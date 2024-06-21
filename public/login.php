@@ -38,13 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-lg-6">
-                    <div class="text-center mb-5">
-                        <h2>Login to FindJob</h2>
-                        <?php
-                        if (isset($error_message)) {
-                            echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
-                        }
-                        ?>
+                <div class="col-lg-8 col-xl-12 text-center">
+                    <h2 class="mt-0">Log with FindJob</h2>
+                    <hr class="divider" />
+                    <p class="text-muted mb-5">Fill in the form below to login your account.</p>
+                        
                     </div>
                     <form action="login.php" method="post">
                         <div class="form-floating mb-3">
