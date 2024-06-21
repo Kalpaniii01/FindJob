@@ -35,6 +35,9 @@
         color: red;
         padding-right: 100px;
     }
+    .navbar-brand{
+        padding-left: 20px;
+    }
     .navbar-nav{
         padding-left: 100px;
     }
