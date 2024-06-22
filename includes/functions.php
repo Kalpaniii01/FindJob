@@ -321,7 +321,7 @@ function getRecommendedJobsForCandidate($limit = 6) {
     global $db;
 
     // Example SQL query to fetch last 6 jobs
-    $sql = "SELECT job_id, company_id, title, description, location, salary, category, date_posted 
+    $sql = "SELECT job_id, company_id, title, description, salary, category, date_posted 
             FROM jobs 
             ORDER BY date_posted DESC 
             LIMIT ?";
@@ -343,4 +343,78 @@ function getRecommendedJobsForCandidate($limit = 6) {
     return $jobs;
 }
 
+/**
+ * Apply for a job.
+ *
+ * @param int $job_id The ID of the job to apply for.
+ * @param int $candidate_id The ID of the candidate applying for the job.
+ * @return bool Returns true on success, false on failure.
+ */
+function applyForJob($job_id, $candidate_id) {
+    global $db; // Assuming $db is your MySQLi database connection object
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        die("ERROR: Could not connect to database.");
+    }
+
+    try {
+        // Start a transaction
+        $db->begin_transaction();
+
+        // Insert application into applications table
+        $sql = "INSERT INTO applications (job_id, candidate_id, date_applied) VALUES (?, ?, NOW())";
+        $stmt = $db->prepare($sql);
+        if (!$stmt) {
+            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+        }
+
+        $stmt->bind_param('ii', $job_id, $candidate_id);
+        if (!$stmt->execute()) {
+            throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+
+        // Commit the transaction
+        $db->commit();
+
+        return true; // Application successful
+    } catch (Exception $e) {
+        // Rollback the transaction on failure
+        $db->rollback();
+        // You can log the error or handle it as needed
+        error_log('Failed to apply for job: ' . $e->getMessage());
+        return false; // Application failed
+    }
+}
+
+/**
+ * Check if a candidate has already applied for a job.
+ *
+ * @param int $job_id The ID of the job to check.
+ * @param int $candidate_id The ID of the candidate to check.
+ * @return bool Returns true if candidate has applied, false otherwise.
+ */
+function checkIfApplied($job_id, $candidate_id) {
+    global $link; // Assuming $link is your mysqli connection object
+
+    // Check if $link is a valid mysqli connection
+    if (!($link instanceof mysqli) || $link->connect_error) {
+        // Attempt to reconnect
+        $link = dbConnect();
+        if (!($link instanceof mysqli) || $link->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement
+    $sql = "SELECT COUNT(*) FROM applications WHERE job_id = ? AND candidate_id = ?";
+    $stmt = $link->prepare($sql);
+    $stmt->bind_param("ii", $job_id, $candidate_id);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    return ($count > 0); // Returns true if the candidate has applied, false otherwise
+}
 ?>

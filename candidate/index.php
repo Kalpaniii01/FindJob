@@ -28,6 +28,23 @@ $numJobs = getCount('jobs');
 $numCompanies = getCount('companies');
 $numRecommendedCandidates = getCount('candidates');
 
+// Process apply job action
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'apply_job') {
+    if (isset($_POST['job_id'])) {
+        $job_id = $_POST['job_id'];
+        // Insert application into applications table
+        $success = applyForJob($job_id, $user_id);
+
+        if ($success) {
+            // Redirect to same page after applying
+            header('Location: index.php');
+            exit;
+        } else {
+            // Handle application error
+            echo '<script>alert("Failed to apply for the job.");</script>';
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,11 +79,12 @@ $numRecommendedCandidates = getCount('candidates');
         flex-direction: column;
         font-family: 'Merriweather Sans', sans-serif; /* Use Merriweather Sans as the font */
         color: #000; /* Set default text color to black */
-        padding-top: 60px; /* Adjust as needed for fixed navbar */
+        padding-top: 0; /* Remove top padding to fix the navbar at the top */
     }
     
     main {
         flex: 1;
+        padding-bottom: 40px;
     }
     
     footer {
@@ -79,6 +97,10 @@ $numRecommendedCandidates = getCount('candidates');
     
     .navbar {
         background-color: #fff; /* Set navbar background to white */
+        position: fixed; /* Fix the navbar to the top */
+        top: 0;
+        width: 100%;
+        z-index: 1030; /* Ensure the navbar stays above other content */
     }
     
     .navbar-dark .navbar-nav .nav-link {
@@ -111,14 +133,17 @@ $numRecommendedCandidates = getCount('candidates');
 </style>
 <body>
     <?php include '../templates/can_navbar.php'; ?>
+    <br><br>
 
-    <div class="container mt-5">
-        <h1>Welcome, <?php echo htmlspecialchars($candidate['full_name']); ?></h1>
-        <p>Your location: <?php echo htmlspecialchars($candidate['address']); ?></p>
-        <p>Your phone number: <?php echo htmlspecialchars($candidate['phone_number']); ?></p>
-        
+    <div class="container mt-5 ">
         <main class="flex-shrink-0">
-        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Welcome, <?php echo htmlspecialchars($candidate['full_name']); ?></h1>
+                    <p>Your location: <?php echo htmlspecialchars($candidate['address']); ?></p>
+                    <p>Your phone number: <?php echo htmlspecialchars($candidate['phone_number']); ?></p>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card text-center">
@@ -148,9 +173,8 @@ $numRecommendedCandidates = getCount('candidates');
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-        
+        </main>
+
         <!-- Recommended Jobs Section -->
         <h2>Recommended Jobs</h2>
         
@@ -160,7 +184,6 @@ $numRecommendedCandidates = getCount('candidates');
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
-                    <th>Location</th>
                     <th>Salary</th>
                     <th>Category</th>
                     <th>Actions</th>
@@ -171,17 +194,28 @@ $numRecommendedCandidates = getCount('candidates');
                     <tr>
                         <td><?php echo htmlspecialchars($job['title']); ?></td>
                         <td><?php echo htmlspecialchars($job['description']); ?></td>
-                        <td><?php echo htmlspecialchars($job['location']); ?></td>
                         <td><?php echo htmlspecialchars($job['salary']); ?></td>
                         <td><?php echo htmlspecialchars($job['category']); ?></td>
                         <td>
-                            <a href="view_job.php?job_id=<?php echo $job['job_id']; ?>" class="btn btn-primary">View</a>
-                            <a href="apply_job.php?job_id=<?php echo $job['job_id']; ?>" class="btn btn-success">Apply</a>
+                            <?php
+                            // Check if the job has been applied by the candidate
+                            $applied = checkIfApplied($job['job_id'], $user_id);
+                            if ($applied) {
+                                echo '<button type="button" class="btn btn-success" disabled>Applied</button>';
+                            } else {
+                                echo '<form method="POST" action="index.php">';
+                                echo '<input type="hidden" name="action" value="apply_job">';
+                                echo '<input type="hidden" name="job_id" value="' . $job['job_id'] . '">';
+                                echo '<button type="submit" class="btn btn-primary">Apply</button>';
+                                echo '</form>';
+                            }
+                            ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <br><br><br>
 
         <!-- Additional Sections or Content can be added here -->
 
