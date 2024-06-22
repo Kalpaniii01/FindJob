@@ -162,11 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     </div>
                     <div class="col-md-3">
                         <select name="category" class="form-select">
-                            <option value="">Select Category</option>
+                            <option value="" disabled selected>Select a category</option>
                             <option value="IT">IT</option>
-                            <option value="Engineering">Engineering</option>
-                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
                             <option value="Sales">Sales</option>
+                            <option value="Human Resources">Human Resources</option>
                         </select>
                     </div>
                 </div>
