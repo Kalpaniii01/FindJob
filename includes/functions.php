@@ -520,5 +520,36 @@ function fetchJobs($title = null, $min_salary = null, $max_salary = null, $categ
     $stmt->close();
     return $jobs;
 }
+function getAppliedJobsForCandidate($user_id) {
+    $db = dbConnect(); // Get database connection
+
+    // Check if database connection is established
+    if (!$db) {
+        die("Database connection error: " . mysqli_connect_error());
+    }
+
+    // Prepare SQL statement to fetch applied jobs with details and status
+    $sql = "SELECT j.job_id, j.title, j.description, j.salary, j.category, a.status
+            FROM jobs j
+            INNER JOIN applications a ON j.job_id = a.job_id
+            WHERE a.candidate_id = ?
+            ORDER BY a.date_applied DESC";
+
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+    
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $applied_jobs = [];
+    while ($row = $result->fetch_assoc()) {
+        $applied_jobs[] = $row;
+    }
+
+    return $applied_jobs;
+}
 
 ?>
