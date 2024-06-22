@@ -417,4 +417,40 @@ function checkIfApplied($job_id, $candidate_id) {
 
     return ($count > 0); // Returns true if the candidate has applied, false otherwise
 }
+
+function updateCandidateProfile($user_id, $full_name, $phone_number, $address) {
+    global $db; // Assuming $db is your database connection object
+
+    try {
+        // Check if $db is a valid mysqli connection
+        if (!$db instanceof mysqli || $db->connect_error) {
+            // Attempt to reconnect
+            $db = dbConnect();
+            if (!$db) {
+                return "ERROR: Could not reconnect to database.";
+            }
+        }
+
+        // Update candidate details in the candidates table
+        $stmt = $db->prepare("UPDATE candidates SET full_name = ?, phone_number = ?, address = ? WHERE user_id = ?");
+        if ($stmt === false) {
+            return "prepare() failed: " . htmlspecialchars($db->error);
+        }
+        $stmt->bind_param("sssi", $full_name, $phone_number, $address, $user_id);
+
+        // Execute the statement
+        $stmt->execute();
+
+        // Check if the update was successful
+        if ($stmt->affected_rows === 1) {
+            return true; // Profile updated successfully
+        } else {
+            return "Failed to update profile."; // Error updating profile
+        }
+    } catch (mysqli_sql_exception $e) {
+        return "MySQL error: " . $e->getMessage(); // Handle MySQL errors
+    }
+}
+
+
 ?>

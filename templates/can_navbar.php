@@ -6,13 +6,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="../company/profile.php">Profile</a>
+                <a class="nav-link" href="../candidate/profile.php">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../company/add_jobs.php">Jobs</a>
+                <a class="nav-link" href="../candidate/jobs.php">Jobs</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../company/jobs.php">Applied Jobs</a>
+                <a class="nav-link" href="../candidate/applied_jobs.php">Applied Jobs</a>
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">
