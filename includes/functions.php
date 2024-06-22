@@ -552,4 +552,56 @@ function getAppliedJobsForCandidate($user_id) {
     return $applied_jobs;
 }
 
+function getApplicantsForCompanyJobs($company_id) {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query
+    $sql = "SELECT a.application_id, j.title AS job_title, c.full_name, c.phone_number AS phone, a.status
+            FROM applications a
+            INNER JOIN jobs j ON a.job_id = j.job_id
+            INNER JOIN candidates c ON a.candidate_id = c.user_id
+            WHERE j.company_id = ?";
+
+    // Prepare statement and bind parameters
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die('ERROR: Failed to prepare statement: ' . $db->error);
+    }
+
+    $stmt->bind_param("i", $company_id);
+    $stmt->execute();
+
+    // Get result set
+    $result = $stmt->get_result();
+
+    // Fetch applicants into array
+    $applicants = [];
+    while ($row = $result->fetch_assoc()) {
+        $applicants[] = $row;
+    }
+
+    // Close statement
+    $stmt->close();
+
+    // Return array of applicants
+    return $applicants;
+}
+
+function updateApplicationStatus($application_id, $status) {
+    $db = dbConnect();
+    
+    $sql = "UPDATE applications SET status = ? WHERE application_id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("si", $status, $application_id);
+    
+    return $stmt->execute();
+}
 ?>
