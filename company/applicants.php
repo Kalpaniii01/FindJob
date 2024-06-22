@@ -97,8 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         footer {
             background-color: #f8f9fa;
             padding: 20px 0;
-            width: 100%;
-            margin-top: auto; /* Push footer to bottom */
+            width: 100%; /* Push footer to bottom */
         }
         
         .navbar {
@@ -175,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     </tbody>
                 </table>
             </main>
-        </div>
+        </div><br><br>
 
         <?php include '../templates/footer.php'; ?>
     </div>

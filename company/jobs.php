@@ -88,9 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_job'])) {
             background-color: #f8f9fa;
             padding: 20px 0;
             width: 100%;
-            position: absolute;
+            /* position: absolute;
             bottom: 0;
-            left: 0;
+            left: 0; */
         }
 
         .navbar {
@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_job'])) {
                 </form>
             </div>
         </div>
-    </div>
+    </div><br><br>
 
     <?php include '../templates/footer.php'; ?>
 

@@ -97,10 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     footer {
         background-color: #f8f9fa;
         padding: 20px 0;
-        position: absolute; /* Position footer absolutely */
-        bottom: 0;
         width: 100%;
-        text-align: center; /* Center-align footer content */
     }
 
     .navbar {
