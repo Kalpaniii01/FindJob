@@ -237,6 +237,7 @@ function addJob($company_id, $title, $description, $requirements, $location, $sa
         die('prepare() failed: ' . htmlspecialchars($db->error));
     }
 
+    // Correct data types: i (integer), s (string), d (double), s (string)
     $stmt->bind_param("isssdss", $company_id, $title, $description, $requirements, $location, $salary, $category);
 
     if ($stmt->execute()) {
@@ -283,6 +284,63 @@ function updateCompanyProfile($company_id, $company_name, $location, $industry, 
     } else {
         return $stmt->error;
     }
+}
+
+function getCandidateDetailsByUserId($user_id) {
+    global $db;
+    $db = dbConnect(); // Get the database connection
+
+    // Check if the connection is still active
+    if (!mysqli_ping($db)) {
+        die("Connection lost. Reconnecting...");
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!$db) {
+            die("ERROR: Could not reconnect. " . mysqli_connect_error());
+        }
+    }
+
+    // Example SQL query to fetch candidate details
+    $sql = "SELECT full_name, address, phone_number FROM candidates WHERE user_id = ?";
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die("prepare() failed: " . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        return $result->fetch_assoc(); // Return candidate details as an associative array
+    } else {
+        return null; // Candidate not found
+    }
+}
+function getRecommendedJobsForCandidate($limit = 6) {
+    global $db;
+
+    // Example SQL query to fetch last 6 jobs
+    $sql = "SELECT job_id, company_id, title, description, location, salary, category, date_posted 
+            FROM jobs 
+            ORDER BY date_posted DESC 
+            LIMIT ?";
+
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die("prepare() failed: " . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $jobs = [];
+    while ($row = $result->fetch_assoc()) {
+        $jobs[] = $row;
+    }
+
+    return $jobs;
 }
 
 ?>
