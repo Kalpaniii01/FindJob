@@ -53,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -77,65 +76,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="../assets/index/css/styles.css" rel="stylesheet" />
 </head>
 <style>
-     html, body {
-            height: 100%;
-        }
-        
-        body {
-            display: flex;
-            flex-direction: column;
-            font-family: 'Merriweather Sans', sans-serif; /* Use Merriweather Sans as the font */
-            color: #000; /* Set default text color to black */
-        }
-        
-        main {
-            flex: 1;
-            padding-top: 60px; /* Adjust as needed for fixed navbar */
-        }
-        
-        footer {
-            background-color: #f8f9fa;
-            padding: 20px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-        
-        .navbar {
-            background-color: #fff; /* Set navbar background to white */
-        }
-        
-        .navbar-dark .navbar-nav .nav-link {
-            color: #000; /* Set navbar link text color to black */
-        }
-        
-        .navbar-dark .navbar-nav .nav-link:hover {
-            color: #ffa500; /* Set navbar link hover color to orange */
-        }
-        
-        /* Increase card size and apply hover effect */
-        .card {
-            height: 250px; /* Set height of card */
-            transition: all 0.3s ease; /* Smooth transition for hover effect */
-        }
-        
-        .card:hover {
-            background-color: #f4623a; /* Change background color on hover */
-            color: #fff; /* Change text color to white on hover */
-            transform: translateY(-10px); /* Move card up on hover */
-        }
-        
-        /* Center card title vertically */
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    body {
+        font-family: 'Merriweather Sans', sans-serif; /* Use Merriweather Sans as the font */
+        color: #000; /* Set default text color to black */
+    }
+    
+    main {
+        flex: 1; /* This makes the main content area take up remaining space */
+        padding-top: 60px; /* Adjust as needed for fixed navbar */
+    }
+    
+    footer {
+        background-color: #f8f9fa;
+        padding: 20px 0;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+    
+    .navbar {
+        background-color: #fff; /* Set navbar background to white */
+    }
+    
+    .navbar-dark .navbar-nav .nav-link {
+        color: #000; /* Set navbar link text color to black */
+    }
+    
+    .navbar-dark .navbar-nav .nav-link:hover {
+        color: #ffa500; /* Set navbar link hover color to orange */
+    }
+    
+    /* Increase card size and apply hover effect */
+    .card {
+        height: 250px; /* Set height of card */
+        transition: all 0.3s ease; /* Smooth transition for hover effect */
+    }
+    
+    .card:hover {
+        background-color: #f4623a; /* Change background color on hover */
+        color: #fff; /* Change text color to white on hover */
+        transform: translateY(-10px); /* Move card up on hover */
+    }
+    
+    /* Center card title vertically */
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 </style>
 <body>
     <?php include '../templates/can_navbar.php'; ?>
 
-    <div class="container mt-5">
+    <main class="container mt-5">
         <h1>Candidate Profile</h1>
         <?php if (!empty($errors)): ?>
             <div class="alert alert-danger" role="alert">
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="button" class="btn btn-secondary" onclick="cancelChanges()">Cancel</button>
             <button type="submit" class="btn btn-primary" id="updateButton" disabled>Update</button>
         </form>
-    </div>
+    </main>
 
     <?php include '../templates/footer.php'; ?>
 

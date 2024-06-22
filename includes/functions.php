@@ -452,5 +452,73 @@ function updateCandidateProfile($user_id, $full_name, $phone_number, $address) {
     }
 }
 
+function fetchJobs($title = null, $min_salary = null, $max_salary = null, $category = null) {
+    global $db; // Assuming $db is your database connection
+
+    // Check if $db is a valid mysqli connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Base SQL query to select jobs
+    $sql = "SELECT job_id, company_id, title, description, salary, category, date_posted FROM jobs";
+
+    // Initialize an array to store conditions
+    $conditions = [];
+    $params = [];
+
+    // Build the WHERE clause based on provided filters
+    if (!empty($title)) {
+        $conditions[] = "title LIKE ?";
+        $params[] = "%" . $title . "%";
+    }
+    if (!empty($min_salary)) {
+        $conditions[] = "salary >= ?";
+        $params[] = $min_salary;
+    }
+    if (!empty($max_salary)) {
+        $conditions[] = "salary <= ?";
+        $params[] = $max_salary;
+    }
+    if (!empty($category)) {
+        $conditions[] = "category = ?";
+        $params[] = $category;
+    }
+
+    // If there are conditions, append them to the base query
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    // Prepare and execute the SQL query
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die("prepare() failed: " . htmlspecialchars($db->error));
+    }
+
+    // Bind parameters if there are any
+    if (!empty($params)) {
+        // Dynamically bind parameters
+        $types = str_repeat("s", count($params)); // Assuming all parameters are strings
+        $stmt->bind_param($types, ...$params);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch jobs into an array
+    $jobs = [];
+    while ($row = $result->fetch_assoc()) {
+        $jobs[] = $row;
+    }
+
+    // Close statement and return jobs
+    $stmt->close();
+    return $jobs;
+}
 
 ?>
