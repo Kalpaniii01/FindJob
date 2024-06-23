@@ -92,8 +92,7 @@ $recentCompanies = getRecent('companies', 'company_id');
 <body>
     <?php include '../templates/admin_navbar.php'; ?>
 
-    <main class="container mt-5">
-        
+    <main class="container mt-5">        
         <div class="row">
             <div class="col-md-4">
                 <div class="card text-center">
