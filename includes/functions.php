@@ -657,4 +657,146 @@ function updateApplicationStatus($application_id, $status) {
     
     return $stmt->execute();
 }
+
+function deleteCandidate($candidate_id) {
+    global $db;
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement to delete candidate
+    $sql = "DELETE FROM candidates WHERE candidate_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("i", $candidate_id);
+    $stmt->execute();
+
+    // Check if the candidate was deleted
+    if ($stmt->affected_rows === 1) {
+        return true; // Candidate deleted successfully
+    } else {
+        return false; // Candidate not found or deletion failed
+    }
+}
+
+function deleteJob($job_id) {
+    global $db;
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement to delete job
+    $sql = "DELETE FROM jobs WHERE job_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("i", $job_id);
+    $stmt->execute();
+
+    // Check if the job was deleted
+    if ($stmt->affected_rows === 1) {
+        return true; // Job deleted successfully
+    } else {
+        return false; // Job not found or deletion failed
+    }
+}
+
+function getAllCandidates() {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query to fetch all candidates
+    $sql = "SELECT candidate_id, full_name, email, phone_number,address,cv_file FROM candidates";
+    $result = $db->query($sql);
+
+    // Fetch candidates into array
+    $candidates = [];
+    while ($row = $result->fetch_assoc()) {
+        $candidates[] = $row;
+    }
+
+    return $candidates;
+}
+
+function updateCandidate($candidate_id, $full_name, $email, $phone_number, $address, $cv_file) {
+    global $db;
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement to update candidate details
+    $sql = "UPDATE candidates SET full_name = ?, email = ?, phone_number = ?, address = ?, cv_file = ? WHERE candidate_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("sssssi", $full_name, $email, $phone_number, $address, $cv_file, $candidate_id);
+    $stmt->execute();
+
+    // Check if the candidate was updated
+    if ($stmt->affected_rows === 1) {
+        return true; // Candidate updated successfully
+    } else {
+        return false; // Candidate not found or update failed
+    }
+}
+
+function getCandidateDetailsByCandidateId ($candidate_id) {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query to fetch candidate details by candidate ID
+    $sql = "SELECT full_name, email, phone_number, address, cv_file FROM candidates WHERE candidate_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("i", $candidate_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch candidate details
+    $candidate = $result->fetch_assoc();
+
+    return $candidate;
+}
 ?>
