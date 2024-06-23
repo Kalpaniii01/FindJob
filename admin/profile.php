@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidate Profile</title>
+    <title>Admin Profile</title>
     <link rel="stylesheet" href="../assets/index/css/styles.css"> <!-- Adjust path as necessary -->
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="../assets/index/assert/favicon.ico" />
