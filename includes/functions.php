@@ -718,6 +718,36 @@ function deleteJob($job_id) {
     }
 }
 
+function deletecompany ($company_id) {
+    global $db;
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement to delete company
+    $sql = "DELETE FROM companies WHERE company_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("i", $company_id);
+    $stmt->execute();
+
+    // Check if the company was deleted
+    if ($stmt->affected_rows === 1) {
+        return true; // Company deleted successfully
+    } else {
+        return false; // Company not found or deletion failed
+    }
+}
+
 function getAllCandidates() {
     global $db;
 
@@ -740,6 +770,30 @@ function getAllCandidates() {
     }
 
     return $candidates;
+}
+
+function getAllCompanies () {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query to fetch all companies
+    $sql = "SELECT company_id, company_name, location, industry, description FROM companies";
+    $result = $db->query($sql);
+
+    // Fetch companies into array
+    $companies = [];
+    while ($row = $result->fetch_assoc()) {
+        $companies[] = $row;
+    }
+
+    return $companies;
 }
 
 function updateCandidate($candidate_id, $full_name, $email, $phone_number, $address, $cv_file) {
@@ -772,6 +826,36 @@ function updateCandidate($candidate_id, $full_name, $email, $phone_number, $addr
     }
 }
 
+function updateCompany($company_id, $company_name, $location, $industry, $description) {
+    global $db;
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement to update company details
+    $sql = "UPDATE companies SET company_name = ?, location = ?, industry = ?, description = ? WHERE company_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("ssssi", $company_name, $location, $industry, $description, $company_id);
+    $stmt->execute();
+
+    // Check if the company was updated
+    if ($stmt->affected_rows === 1) {
+        return true; // Company updated successfully
+    } else {
+        return false; // Company not found or update failed
+    }
+}
+
 function getCandidateDetailsByCandidateId ($candidate_id) {
     global $db;
 
@@ -798,5 +882,33 @@ function getCandidateDetailsByCandidateId ($candidate_id) {
     $candidate = $result->fetch_assoc();
 
     return $candidate;
+}
+
+function getCompanyDetailsByCompanyId($company_id) {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query to fetch company details by company ID
+    $sql = "SELECT company_name, location, industry, description FROM companies WHERE company_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("i", $company_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch company details
+    $company = $result->fetch_assoc();
+
+    return $company;
 }
 ?>

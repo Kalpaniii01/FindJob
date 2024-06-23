@@ -40,7 +40,7 @@ $candidates = getAllCandidates();
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                       
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -52,7 +52,6 @@ $candidates = getAllCandidates();
                 <tbody>
                     <?php foreach ($candidates as $candidate): ?>
                         <tr>
-                            <td><?php echo $candidate['candidate_id']; ?></td>
                             <td><?php echo $candidate['full_name']; ?></td>
                             <td><?php echo $candidate['email']; ?></td>
                             <td><?php echo $candidate['phone_number']; ?></td>
