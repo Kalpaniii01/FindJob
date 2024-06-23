@@ -994,4 +994,24 @@ function getJobDetailsByjobId ($job_id) {
 
     return $job;
 }
+
+
+function getRecent($table, $id) {
+    $conn = dbConnect(); // Assuming this function connects to the database
+    $sql = "SELECT * FROM $table ORDER BY $id DESC LIMIT 5";
+    $result = $conn->query($sql);
+
+    $rows = array(); // Initialize an empty array to store results
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row; // Append each row to the $rows array
+        }
+    }
+
+    return $rows;
+}
+
+
+
 ?>
