@@ -796,6 +796,30 @@ function getAllCompanies () {
     return $companies;
 }
 
+function getAlljobs() {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query to fetch all jobs
+    $sql = "SELECT  job_id,title,company_name, jobs.description, salary, category, date_posted FROM jobs INNER JOIN companies ON jobs.company_id = companies.company_id";
+    $result = $db->query($sql);
+
+    // Fetch jobs into array
+    $jobs = [];
+    while ($row = $result->fetch_assoc()) {
+        $jobs[] = $row;
+    }
+
+    return $jobs;
+}
+
 function updateCandidate($candidate_id, $full_name, $email, $phone_number, $address, $cv_file) {
     global $db;
 
@@ -856,6 +880,37 @@ function updateCompany($company_id, $company_name, $location, $industry, $descri
     }
 }
 
+function updateJob($job_id, $title, $description, $salary, $category,$date_posted) {
+    global $db;
+    $date_posted = date('Y-m-d H:i:s');
+
+    // Check if $db is a valid MySQLi connection
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL statement to update job details
+    $sql = "UPDATE jobs SET title = ?, description = ?, salary = ?, category = ?,date_posted = ? WHERE job_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("ssdssi", $title, $description, $salary, $category, $date_posted,$job_id);
+    $stmt->execute();
+
+    // Check if the job was updated
+    if ($stmt->affected_rows === 1) {
+        return true; // Job updated successfully
+    } else {
+        return false; // Job not found or update failed
+    }
+}
+
 function getCandidateDetailsByCandidateId ($candidate_id) {
     global $db;
 
@@ -910,5 +965,33 @@ function getCompanyDetailsByCompanyId($company_id) {
     $company = $result->fetch_assoc();
 
     return $company;
+}
+
+function getJobDetailsByjobId ($job_id) {
+    global $db;
+
+    // Ensure $db is a valid MySQLi object and reconnect if necessary
+    if (!($db instanceof mysqli) || $db->connect_error) {
+        $db = dbConnect();
+        if (!($db instanceof mysqli) || $db->connect_error) {
+            die("ERROR: Could not reconnect to database.");
+        }
+    }
+
+    // Prepare SQL query to fetch job details by job ID
+    $sql = "SELECT title, description, salary, category, date_posted FROM jobs WHERE job_id = ?";
+    $stmt = $db->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: (" . $db->errno . ") " . $db->error);
+    }
+
+    $stmt->bind_param("i", $job_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch job details
+    $job = $result->fetch_assoc();
+
+    return $job;
 }
 ?>
