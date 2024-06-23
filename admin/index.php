@@ -2,49 +2,29 @@
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
-// Check if user is logged in and is a candidate user
+// Check if user is logged in and is an admin user
 if (!isLoggedIn() || !isAdmin()) {
-    // Redirect to login page or appropriate access denied page
     header('Location: ../public/login.php');
     exit;
 }
 
-// Get user_id from session
-$user_id = $_SESSION['user_id']; // Assuming user_id is stored in session
-
-// Fetch admin details using user_id
-$admin = getAdminDetailsByUserId($user_id);
-
-if ($admin === null) {
-    // Handle error, admin not found
-    die('admin not found.');
-}
+// Fetch metrics
+$numCompanies = getCount('companies');
+$numCandidates = getCount('candidates');
+$numJobs = getCount('jobs');
+$recentCandidates = getRecent('candidates', 'candidate_id');
+$recentJobs = getRecent('jobs', 'job_id');
+$recentCompanies = getRecent('companies', 'company_id');
 
 ?>
 
-
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../assets/index/assert/favicon.ico" />
-    
-    <!-- Bootstrap Icons-->
+    <link rel="stylesheet" href="../assets/index/css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
-    
-    <!-- SimpleLightbox plugin CSS-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
-    
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="../assets/index/css/styles.css" rel="stylesheet" />
 </head>
 <style>
     html, body {
@@ -108,33 +88,126 @@ if ($admin === null) {
         justify-content: center;
     }
 </style>
+
 <body>
     <?php include '../templates/admin_navbar.php'; ?>
-    <br><br>
 
-    <div class="container mt-5 ">
-        <main class="flex-shrink-0">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Welcome, <?php echo htmlspecialchars($admin['full_name']); ?></h1>
+    <main class="container mt-5">
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Number of Companies</h5>
+                        <p class="card-text"><?php echo $numCompanies; ?></p>
+                        <i class="bi bi-building fs-2"></i> <!-- Bootstrap icon for companies -->
+                    </div>
                 </div>
             </div>
-            
-            <!-- Additional Sections or Content can be added here -->
-        </main>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Number of Candidates</h5>
+                        <p class="card-text"><?php echo $numCandidates; ?></p>
+                        <i class="bi bi-person fs-2"></i> <!-- Bootstrap icon for candidates -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Number of Jobs</h5>
+                        <p class="card-text"><?php echo $numJobs; ?></p>
+                        <i class="bi bi-briefcase fs-2"></i> <!-- Bootstrap icon for jobs -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Candidates Section -->
+        <h2 class="mt-5">Recent Candidates</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($recentCandidates as $candidate): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($candidate['full_name']); ?></td>
+                        <td><?php echo htmlspecialchars($candidate['email']); ?></td>
+                        <td><?php echo htmlspecialchars($candidate['phone_number']); ?></td>
+                        <td>
+                            <a href="edit_candidate.php?id=<?php echo $candidate['candidate_id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="delete_candidate.php?id=<?php echo $candidate['candidate_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this candidate?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <!-- Recent Jobs Section -->
+        <h2 class="mt-4">Recent Jobs</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Salary</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($recentJobs as $job): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($job['title']); ?></td>
+                        <td><?php echo htmlspecialchars($job['description']); ?></td>
+                        <td><?php echo htmlspecialchars($job['salary']); ?></td>
+                        <td><?php echo htmlspecialchars($job['category']); ?></td>
+                        <td>
+                            <a href="edit_job.php?id=<?php echo $job['job_id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="delete_job.php?id=<?php echo $job['job_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this job?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
+        <!-- Recent Companies Section -->
+        <h2 class="mt-4">Recent Companies</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Industry</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($recentCompanies as $company): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($company['company_name']); ?></td>
+                        <td><?php echo htmlspecialchars($company['location']); ?></td>
+                        <td><?php echo htmlspecialchars($company['industry']); ?></td>
+                        <td><?php echo htmlspecialchars($company['description']); ?></td>
+                        <td>
+                            <a href="edit_company.php?id=<?php echo $company['company_id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="delete_company.php?id=<?php echo $company['company_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this company?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
-        <br>
-
-        <!-- Additional Sections or Content can be added here -->
-
-    </div>
+    </main>
 
     <?php include '../templates/footer.php'; ?>
-
-    <!-- Bootstrap and Custom Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs5-toggle-switch/dist/bs5-toggle-switch.min.js"></script>
-    <script src="../assets/index/js/scripts.js"></script>
 </body>
 </html>
