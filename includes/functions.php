@@ -286,6 +286,24 @@ function updateCompanyProfile($company_id, $company_name, $location, $industry, 
     }
 }
 
+function updateAdminProfile($admin_id, $full_name) {
+    global $db;
+
+    $sql = "UPDATE admins SET full_name = ? WHERE admin_id = ?";
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die('prepare() failed: ' . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("si",$full_name, $admin_id);
+
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return $stmt->error;
+    }
+}
+
 function getCandidateDetailsByUserId($user_id) {
     global $db;
     $db = dbConnect(); // Get the database connection
@@ -317,6 +335,41 @@ function getCandidateDetailsByUserId($user_id) {
         return null; // Candidate not found
     }
 }
+
+
+function getAdminDetailsByUserId($user_id) {
+    global $db;
+    $db = dbConnect(); // Get the database connection
+
+    // Check if the connection is still active
+    if (!mysqli_ping($db)) {
+        die("Connection lost. Reconnecting...");
+        // Attempt to reconnect
+        $db = dbConnect();
+        if (!$db) {
+            die("ERROR: Could not reconnect. " . mysqli_connect_error());
+        }
+    }
+
+    // Example SQL query to fetch candidate details
+    $sql = "SELECT full_name FROM admins WHERE admin_id = ?";
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        die("prepare() failed: " . htmlspecialchars($db->error));
+    }
+
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        return $result->fetch_assoc(); // Return candidate details as an associative array
+    } else {
+        return null; // Candidate not found
+    }
+}
+
+
 function getRecommendedJobsForCandidate($limit = 6) {
     global $db;
 
