@@ -42,7 +42,7 @@ $candidates = getAllCandidates();
                     <tr>
                        
                         <th>Full Name</th>
-                        <th>Email</th>
+                        
                         <th>Phone</th>
                         <th>Address</th>
                         <th>CV</th>
@@ -53,7 +53,7 @@ $candidates = getAllCandidates();
                     <?php foreach ($candidates as $candidate): ?>
                         <tr>
                             <td><?php echo $candidate['full_name']; ?></td>
-                            <td><?php echo $candidate['email']; ?></td>
+                            
                             <td><?php echo $candidate['phone_number']; ?></td>
                             <td><?php echo $candidate['address']; ?></td>
                             <td><?php echo $candidate['cv_file']; ?></td>

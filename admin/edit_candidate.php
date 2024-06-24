@@ -53,10 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" class="form-control" id="full_name" name="full_name" value="<?php echo $candidate['full_name']; ?>" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $candidate['email']; ?>" required>
-            </div>
-            <div class="mb-3">
                 <label for="phone_number" class="form-label">Phone Number</label>
                 <input type="text" class="form-control" id="phone_number" name="phone_number" value="<?php echo $candidate['phone_number']; ?>">
             </div>

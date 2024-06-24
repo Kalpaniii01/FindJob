@@ -352,7 +352,7 @@ function getAdminDetailsByUserId($user_id) {
     }
 
     // Example SQL query to fetch candidate details
-    $sql = "SELECT full_name FROM admins WHERE admin_id = ?";
+    $sql = "SELECT full_name FROM admins WHERE user_id = ?";
     $stmt = $db->prepare($sql);
     if ($stmt === false) {
         die("prepare() failed: " . htmlspecialchars($db->error));
@@ -760,7 +760,7 @@ function getAllCandidates() {
     }
 
     // Prepare SQL query to fetch all candidates
-    $sql = "SELECT candidate_id, full_name, email, phone_number,address,cv_file FROM candidates";
+    $sql = "SELECT candidate_id, full_name, phone_number,address,cv_file FROM candidates";
     $result = $db->query($sql);
 
     // Fetch candidates into array
@@ -833,13 +833,13 @@ function updateCandidate($candidate_id, $full_name, $email, $phone_number, $addr
     }
 
     // Prepare SQL statement to update candidate details
-    $sql = "UPDATE candidates SET full_name = ?, email = ?, phone_number = ?, address = ?, cv_file = ? WHERE candidate_id = ?";
+    $sql = "UPDATE candidates SET full_name = ?, phone_number = ?, address = ?, cv_file = ? WHERE candidate_id = ?";
     $stmt = $db->prepare($sql);
     if (!$stmt) {
         die("Prepare failed: (" . $db->errno . ") " . $db->error);
     }
 
-    $stmt->bind_param("sssssi", $full_name, $email, $phone_number, $address, $cv_file, $candidate_id);
+    $stmt->bind_param("sssssi", $full_name,$phone_number, $address, $cv_file, $candidate_id);
     $stmt->execute();
 
     // Check if the candidate was updated
@@ -923,7 +923,7 @@ function getCandidateDetailsByCandidateId ($candidate_id) {
     }
 
     // Prepare SQL query to fetch candidate details by candidate ID
-    $sql = "SELECT full_name, email, phone_number, address, cv_file FROM candidates WHERE candidate_id = ?";
+    $sql = "SELECT full_name, phone_number, address, cv_file FROM candidates WHERE candidate_id = ?";
     $stmt = $db->prepare($sql);
     if (!$stmt) {
         die("Prepare failed: (" . $db->errno . ") " . $db->error);
