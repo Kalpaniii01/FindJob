@@ -55,6 +55,7 @@ $candidates = getAllCandidates();
                             <td><?php echo $candidate['full_name']; ?></td>
                             
                             <td><?php echo $candidate['phone_number']; ?></td>
+                            <td><?php echo $candidate['email_address']; ?></td>
                             <td><?php echo $candidate['address']; ?></td>
                             <td><?php echo $candidate['cv_file']; ?></td>
                             <td>
