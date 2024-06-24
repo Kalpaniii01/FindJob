@@ -129,7 +129,6 @@ $recentCompanies = getRecent('companies', 'company_id');
             <thead>
                 <tr>
                     <th>Full Name</th>
-                    <th>Email</th>
                     <th>Phone</th>
                     <th>Actions</th>
                 </tr>
@@ -138,7 +137,6 @@ $recentCompanies = getRecent('companies', 'company_id');
                 <?php foreach ($recentCandidates as $candidate): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($candidate['full_name']); ?></td>
-                        <td><?php echo htmlspecialchars($candidate['email']); ?></td>
                         <td><?php echo htmlspecialchars($candidate['phone_number']); ?></td>
                         <td>
                             <a href="edit_candidate.php?id=<?php echo $candidate['candidate_id']; ?>" class="btn btn-primary">Edit</a>
