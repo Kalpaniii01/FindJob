@@ -352,7 +352,7 @@ function getAdminDetailsByUserId($user_id) {
     }
 
     // Example SQL query to fetch candidate details
-    $sql = "SELECT full_name FROM admins WHERE admin_id = ?";
+    $sql = "SELECT full_name FROM admins WHERE user_id = ?";
     $stmt = $db->prepare($sql);
     if ($stmt === false) {
         die("prepare() failed: " . htmlspecialchars($db->error));
