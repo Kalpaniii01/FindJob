@@ -1,7 +1,7 @@
 <?php
 define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
+define('DB_USERNAME', 'hiranyamunasinghe321@gmail.com');
+define('DB_PASSWORD', '1886_sudari');
 define('DB_NAME', 'FindJob');
 
 // Attempt to connect to MySQL database
