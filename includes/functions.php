@@ -286,16 +286,16 @@ function updateCompanyProfile($company_id, $company_name, $location, $industry, 
     }
 }
 
-function updateAdminProfile($admin_id, $full_name) {
+function updateAdminProfile($user_id, $full_name) {
     global $db;
 
-    $sql = "UPDATE admins SET full_name = ? WHERE admin_id = ?";
+    $sql = "UPDATE admins SET full_name = ? WHERE user_id = ?";
     $stmt = $db->prepare($sql);
     if ($stmt === false) {
         die('prepare() failed: ' . htmlspecialchars($db->error));
     }
 
-    $stmt->bind_param("si",$full_name, $admin_id);
+    $stmt->bind_param("si",$full_name, $user_id);
 
     if ($stmt->execute()) {
         return true;
@@ -351,7 +351,7 @@ function getAdminDetailsByUserId($user_id) {
         }
     }
 
-    // Example SQL query to fetch candidate details
+    // Example SQL query to fetch admin details
     $sql = "SELECT full_name FROM admins WHERE user_id = ?";
     $stmt = $db->prepare($sql);
     if ($stmt === false) {

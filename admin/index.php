@@ -8,6 +8,12 @@ if (!isLoggedIn() || !isAdmin()) {
     exit;
 }
 
+$user_id = $_SESSION['user_id']; // Assuming user_id is stored in session
+
+// Fetch candidate details using user_id
+$admin = getAdminDetailsByUserId($user_id);
+
+
 // Fetch metrics
 $numCompanies = getCount('companies');
 $numCandidates = getCount('candidates');
@@ -91,8 +97,15 @@ $recentCompanies = getRecent('companies', 'company_id');
 
 <body>
     <?php include '../templates/admin_navbar.php'; ?>
-
-    <main class="container mt-5">        
+    <div class="container mt-5">
+       
+    <main class="flex-shrink-0">   
+    <div class="row">
+                <div class="col-md-12">
+                    <h1>Welcome, <?php echo htmlspecialchars($admin['full_name']); ?></h1>
+                    
+                </div>
+            </div>     
         <div class="row">
             <div class="col-md-4">
                 <div class="card text-center">
@@ -204,6 +217,7 @@ $recentCompanies = getRecent('companies', 'company_id');
         </table>
 
     </main>
+    </div>
 
     <?php include '../templates/footer.php'; ?>
 </body>
