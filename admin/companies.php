@@ -53,6 +53,7 @@ $companies = getAllCompanies();
                         <tr>
                             
                             <td><?php echo $company['company_name']; ?></td>
+                            <td><?php echo $company['designation']; ?></td>
                             <td><?php echo $company['location']; ?></td>
                             <td><?php echo $company['industry']; ?></td>
                             <td><?php echo $company['description']; ?></td>
