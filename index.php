@@ -61,6 +61,13 @@
 
                         <h2 class="text-white mt-0">Our Mission</h2>
                         <p class="text-white-75 mb-4">At FindJob, our mission is to simplify the job search process and empower individuals to achieve their career goals. We strive to provide a platform that offers diverse opportunities, helping job seekers find roles that match their skills, passions, and ambitions.</p>
+                        
+                        <!-- Subscription Form -->
+                        <form id="subscription-form" action="subscribe.php" method="POST">
+                            <label for="email">Subscribe to Job Alerts:</label>
+                            <input type="email" name="email" id="email" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
                     </div>
                 </div>
             </div>
