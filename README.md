@@ -4,7 +4,7 @@
 
 # FindJob
 
-FindJob is a job vacancy platform that connects candidates with companies offering job opportunities. The platform provides functionality for candidates to search and apply for jobs, companies to post job vacancies and manage applications, and admins to manage the overall platform.
+FindJob serves as a dynamic job vacancy portal, facilitating connections between potential employees and businesses seeking talent. Job seekers can search and apply for openings, employers can advertise positions and handle applications, and platform administrators have control over maintaining and optimizing the system.
 
 ## Project Structure
 
